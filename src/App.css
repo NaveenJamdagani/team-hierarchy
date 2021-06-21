@@ -1,5 +1,6 @@
+
 .App {
-  text-align: center;
+  display: flex;
 }
 
 .App-logo {
@@ -35,4 +36,56 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.team-heading {
+  text-align: left;
+  padding-left: 20px;
+  color: #fff;
+  /* border-left: 1px solid #e3e3e3; */
+}
+
+.employee-heading {
+  text-align: left;
+  padding: 5px;
+}
+
+.employee-heading:hover {
+  background: gray;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.index-panel {
+  text-align: center;
+  background-color: #282c34;
+  height: 100vh;
+  width: 25%;
+}
+
+.info-panel {
+  width: 75%;
+  display: flex;
+  justify-content: center;
+}
+
+.info-panel ul {
+  list-style-type: none;
+}
+
+.info-panel ul li {
+  padding: 10px;
+}
+
+.person-key {
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.person-value {
+  font-size: 20px;
+  font-style: italic;
+  color: gray;
+  padding-left: 10px;
 }
