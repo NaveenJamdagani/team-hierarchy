@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/NaveenJamdagani/team-hierarchy.git/static/css/main.ac66b81f.chunk.css",
+    "main.js": "/NaveenJamdagani/team-hierarchy.git/static/js/main.6b707f8c.chunk.js",
+    "main.js.map": "/NaveenJamdagani/team-hierarchy.git/static/js/main.6b707f8c.chunk.js.map",
+    "runtime-main.js": "/NaveenJamdagani/team-hierarchy.git/static/js/runtime-main.63d7642e.js",
+    "runtime-main.js.map": "/NaveenJamdagani/team-hierarchy.git/static/js/runtime-main.63d7642e.js.map",
+    "static/js/2.2ca33a74.chunk.js": "/NaveenJamdagani/team-hierarchy.git/static/js/2.2ca33a74.chunk.js",
+    "static/js/2.2ca33a74.chunk.js.map": "/NaveenJamdagani/team-hierarchy.git/static/js/2.2ca33a74.chunk.js.map",
+    "static/js/3.21a4a2c2.chunk.js": "/NaveenJamdagani/team-hierarchy.git/static/js/3.21a4a2c2.chunk.js",
+    "static/js/3.21a4a2c2.chunk.js.map": "/NaveenJamdagani/team-hierarchy.git/static/js/3.21a4a2c2.chunk.js.map",
+    "index.html": "/NaveenJamdagani/team-hierarchy.git/index.html",
+    "static/css/main.ac66b81f.chunk.css.map": "/NaveenJamdagani/team-hierarchy.git/static/css/main.ac66b81f.chunk.css.map",
+    "static/js/2.2ca33a74.chunk.js.LICENSE.txt": "/NaveenJamdagani/team-hierarchy.git/static/js/2.2ca33a74.chunk.js.LICENSE.txt",
+    "static/media/App.css": "/NaveenJamdagani/team-hierarchy.git/static/media/avatar.c864fb0c.jpg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.63d7642e.js",
+    "static/js/2.2ca33a74.chunk.js",
+    "static/css/main.ac66b81f.chunk.css",
+    "static/js/main.6b707f8c.chunk.js"
+  ]
+}
