@@ -1,12 +1,13 @@
-import { useContext, useReducer } from 'react';
+import { useReducer } from 'react';
 import './App.css';
-import HierarchyTree from './component/HierarchyTree';
+import DHierarchyTree from './component/DHierarchyTree';
 import InfoPanel from './component/InfoPanel';
 
 
 import { getAppData, setAppData } from './service/index';
 
 import AppContext from './context';
+import SearchEmployeePanel from './component/SearchEmployeePanel';
 
 function reducer (state, action) {
   let newState;
@@ -20,6 +21,11 @@ function reducer (state, action) {
     }
 
     case 'TOGGLE_NODE': {
+      const childNodes = state.teamHierarchy[action.payload.id].children;
+
+      childNodes.forEach((d) => {
+        delete state.expandedNodes[d]
+      })
       newState = {
         ...state,
         expandedNodes: {
@@ -37,7 +43,7 @@ function reducer (state, action) {
         teamHierarchy: {
           ...state.teamHierarchy,
           [id]: {
-            id, children: [], title: name, type: 'team', isLocked: false, parentId
+            id, children: [], title: 'Team', type: 'team', isLocked: false, parentId
           },
           [parentId]: {
             ...state.teamHierarchy[parentId],
@@ -85,14 +91,14 @@ function reducer (state, action) {
     case 'DELETE_TEAM_MEMBER': {
       const { id, parentId, type } = action.payload;
       const teamHierarchy = Object.keys(state.teamHierarchy).reduce((acc, el) => {
-        if(el !== id) {
+        if (el !== id) {
           acc[el] = state.teamHierarchy[el]
         }
         return acc;
       }, {});
 
       const userDetails = Object.keys(state.userDetails).reduce((acc, el) => {
-        if(el !== id) {
+        if (el !== id) {
           acc[el] = state.userDetails[el]
         }
         return acc;
@@ -108,10 +114,7 @@ function reducer (state, action) {
           }
         },
         userDetails,
-        activeNode: {
-          id: parentId,
-          type
-        }
+        activeNode: parentId,
       }
       break
     }
@@ -121,11 +124,11 @@ function reducer (state, action) {
       const idsToDelete = [id, ...state.teamHierarchy[id].children];
 
       const teamHierarchy = Object.keys(state.teamHierarchy).reduce((acc, el) => {
-        if (!idsToDelete.includes(el)) {acc[el] = state.teamHierarchy[el]}
+        if (!idsToDelete.includes(el)) { acc[el] = state.teamHierarchy[el] }
         return acc
       }, {})
       const userDetails = Object.keys(state.userDetails).reduce((acc, el) => {
-        if (!idsToDelete.includes(el)) {acc[el] = state.userDetails[el]}
+        if (!idsToDelete.includes(el)) { acc[el] = state.userDetails[el] }
         return acc
       }, {})
 
@@ -139,12 +142,21 @@ function reducer (state, action) {
           }
         },
         userDetails,
-        activeNode: {
-          id: parentId,
-          type
-        }
+        activeNode: parentId
       }
 
+      break
+    }
+
+    case 'EDIT_NODE': {
+      const { id, data } = action.payload;
+      newState = {
+        ...state,
+        userDetails: {
+          ...state.userDetails,
+          [id]: data
+        }
+      }
       break
     }
 
@@ -185,14 +197,21 @@ function App () {
   const [state, dispatch] = useReducer(reducer, initialState);
   const { activeNode, teamHierarchy, expandedNodes } = state;
 
-  const setActiveNode = (id, type) => {
+  const setActiveNode = (id) => {
     dispatch({
       type: 'SET_ACTIVE_NODE',
-      payload: {
-        id,
-        type
-      }
+      payload: id
     })
+  }
+
+  const closeInfoPanel = () => {
+    dispatch({
+      type: 'SET_ACTIVE_NODE',
+      payload: null
+    })
+  }
+
+  const toggleNode = (id) => {
     dispatch({
       type: 'TOGGLE_NODE',
       payload: {
@@ -209,7 +228,7 @@ function App () {
         name,
         phone_number,
         email_id,
-        parentId: activeNode.id,
+        parentId: activeNode,
         title
       }
     })
@@ -226,25 +245,34 @@ function App () {
     })
   }
 
-  const deleteTeamMember = (id, parentId,type) => {
+  const deleteTeamMember = (id, parentId, type) => {
     dispatch({
       type: 'DELETE_TEAM_MEMBER',
       payload: {
-        id,parentId,type
+        id, parentId, type
       }
     })
   }
 
-  const deleteTeam = (id, parentId,type) => {
+  const deleteTeam = (id, parentId, type) => {
     dispatch({
       type: 'DELETE_TEAM',
       payload: {
-        id,parentId,type
+        id, parentId, type
       }
     })
   }
 
-  const changeTeam = (id,oldId, newId) => {
+  const editNode = (id, data) => {
+    dispatch({
+      type: 'EDIT_NODE',
+      payload: {
+        id, data
+      }
+    })
+  }
+
+  const changeTeam = (id, oldId, newId) => {
     dispatch({
       type: 'CHANGE_TEAM',
       payload: {
@@ -257,16 +285,13 @@ function App () {
 
   return (
     <div className="App">
-      <div className="index-panel">
-        {/* <AppContext.Provider> */}
-          <HierarchyTree activeNode={activeNode} expandedNodes={expandedNodes} setActiveNode={setActiveNode} team={teamHierarchy} />
-        {/* </AppContext.Provider> */}
-      </div>
-      {activeNode && <div className="info-panel">
-        <AppContext.Provider value={{addTeamMember,deleteTeamMember,addTeam,deleteTeam,changeTeam,state}}>
-          <InfoPanel />
-        </AppContext.Provider>
-      </div>}
+      <AppContext.Provider value={{ addTeamMember, deleteTeamMember, addTeam, deleteTeam, changeTeam, editNode,setActiveNode, state }}>
+        <SearchEmployeePanel />
+        <div className="index-panel">
+          <DHierarchyTree toggleNode={toggleNode} activeNode={activeNode} expandedNodes={expandedNodes} setActiveNode={setActiveNode} team={teamHierarchy} />
+        </div>
+        {activeNode && <InfoPanel teamHierarchy={teamHierarchy} activeNode={activeNode} closeInfoPanel={closeInfoPanel} />}
+      </AppContext.Provider>
     </div>
   );
 }

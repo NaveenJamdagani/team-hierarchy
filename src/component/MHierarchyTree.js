@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { flatObjToTree } from '../service';
 
 const TreeNode = ({team,setActiveNode,expandedNodes}) => {
-    const { id, type, title, children } = team;
+    const { id, title, children } = team;
     return (
         <div className='team-heading'  onClick={(e) => {
             e.stopPropagation();
-            setActiveNode(id,type)   
+            setActiveNode(id)   
         }} key={id}>
             <div className='employee-heading'>{title}</div>
             {children.length && expandedNodes[id] ? children.map((d) => <TreeNode key={d.id} expandedNodes={expandedNodes} team={d} setActiveNode={setActiveNode} />) : null}
@@ -14,7 +14,7 @@ const TreeNode = ({team,setActiveNode,expandedNodes}) => {
     )
 }
 
-const HierarchyTree = ({ team, setActiveNode, expandedNodes }) => {
+const MHierarchyTree = ({ team, setActiveNode, expandedNodes }) => {
     const [teamTree, setTeamTree] = useState(null);
 
     useEffect(() => {
@@ -27,4 +27,4 @@ const HierarchyTree = ({ team, setActiveNode, expandedNodes }) => {
     )
 }
 
-export default HierarchyTree
+export default MHierarchyTree
